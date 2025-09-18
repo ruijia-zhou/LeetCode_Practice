@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //LeetCode 131
-class PalindromePartitioning {
+class PalindromePartition {
     private String s;
     private int stringLength;
     private boolean[][] palindromeTable;
