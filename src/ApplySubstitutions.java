@@ -1,5 +1,6 @@
 import java.util.*;
 
+// LeetCode 3481
 public class ApplySubstitutions {
     private Map<Character, String> replacementMap;
     private Map<Character, List<Character>> edges;
