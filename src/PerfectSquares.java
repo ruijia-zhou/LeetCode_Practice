@@ -8,6 +8,7 @@ public class PerfectSquares {
                 minNumSquares[i] = Math.min(minNumSquares[i], minNumSquares[i - j * j] + 1);
             }
         }
+
         return minNumSquares[n];
     }
 }

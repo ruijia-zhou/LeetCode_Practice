@@ -13,6 +13,7 @@ public class DailyTemperatures {
         this.waitingDays = new int[numDays];
         this.colderDays = new ArrayDeque<>();
         for (int currDay = 0; currDay < numDays; currDay++) updateOldDays(currDay);
+
         return waitingDays;
     }
 

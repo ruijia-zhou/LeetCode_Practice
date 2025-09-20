@@ -1,25 +1,18 @@
-import java.util.Stack;
+import java.util.*;
 
 // LeetCode 1762
 public class BuildingWithAnOceanView {
-    private final Stack<Integer> oceanViewBuildings = new Stack<>();
-
     public int[] findBuildings(int[] heights) {
+        List<Integer> oceanViewBuildings = new ArrayList<>();
         int curMaxHeight = 0;
         for (int i = heights.length - 1; i >= 0; i--) {
             if (heights[i] > curMaxHeight) {
-                this.oceanViewBuildings.push(i);
+                oceanViewBuildings.add(i);
                 curMaxHeight = heights[i];
             }
         }
-        return reverseBuildingIndices();
-    }
+        Collections.reverse(oceanViewBuildings);
 
-    private int[] reverseBuildingIndices() {
-        int[] reversedOceanViewBuildings = new int[this.oceanViewBuildings.size()];
-        for (int i = 0; i < reversedOceanViewBuildings.length; i++) {
-            reversedOceanViewBuildings[i] = this.oceanViewBuildings.pop();
-        }
-        return reversedOceanViewBuildings;
+        return oceanViewBuildings.stream().mapToInt(Integer::intValue).toArray();
     }
 }

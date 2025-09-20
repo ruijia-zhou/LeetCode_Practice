@@ -13,6 +13,7 @@ public class SortMatrixByDiagonals {
         this.sideLength = grid.length;
         sortTriangle(BOTTOM_LEFT_TRIANGLE);
         sortTriangle(TOP_RIGHT_TRIANGLE);
+
         return grid;
     }
 
@@ -27,6 +28,7 @@ public class SortMatrixByDiagonals {
 
     private int getGridValue(int prefix, int i, boolean triangle) {
         if (triangle == BOTTOM_LEFT_TRIANGLE) return this.grid[i + prefix][i];
+
         return this.grid[i][i + prefix];
     }
 

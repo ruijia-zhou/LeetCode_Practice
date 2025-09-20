@@ -2,19 +2,21 @@ import java.util.*;
 
 // LeetCode 3481
 public class ApplySubstitutions {
-    private Map<Character, String> replacementMap;
-    private Map<Character, List<Character>> edges;
-    private Map<Character, Integer> inDegrees;
+    private static final char MARKER = '%';
+    private Map<Character, String> charToReplacement;
+    private Map<Character, List<Character>> charToEdges;
+    private Map<Character, Integer> charToIndegrees;
 
     public String applySubstitutions(List<List<String>> replacements, String text) {
-        this.replacementMap = new HashMap<>();
-        this.inDegrees = new HashMap<>();
-        this.edges = new HashMap<>();
-        addToMap(replacements);
+        this.charToReplacement = new HashMap<>();
+        this.charToIndegrees = new HashMap<>();
+        this.charToEdges = new HashMap<>();
+        buildGraph(replacements);
         topoSort();
-        for (char placeholder : replacementMap.keySet()) {
-            text = text.replaceAll("%" + placeholder + "%", replacementMap.get(placeholder));
+        for (char placeholder : charToReplacement.keySet()) {
+            text = text.replaceAll(String.valueOf(MARKER + placeholder + MARKER), charToReplacement.get(placeholder));
         }
+
         return text;
     }
 
@@ -22,27 +24,28 @@ public class ApplySubstitutions {
         Queue<Character> verticesWithNoIndegrees = getStartingVertices();
         while (!verticesWithNoIndegrees.isEmpty()) {
             Character from = verticesWithNoIndegrees.poll();
-            List<Character> destinations = edges.getOrDefault(from, new ArrayList<>());
+            List<Character> destinations = charToEdges.getOrDefault(from, new ArrayList<>());
             for (char destination : destinations) {
                 updateReplacement(from, destination);
-                this.inDegrees.put(destination, this.inDegrees.get(destination) - 1);
-                if (this.inDegrees.get(destination) == 0) verticesWithNoIndegrees.offer(destination);
+                this.charToIndegrees.put(destination, this.charToIndegrees.get(destination) - 1);
+                if (this.charToIndegrees.get(destination) == 0) verticesWithNoIndegrees.offer(destination);
             }
         }
     }
 
     private void updateReplacement(char from, char to) {
-        String placeHoldingString = "%" + from + "%";
-        String replaceString = this.replacementMap.get(from);
-        String newReplacement = this.replacementMap.get(to).replaceAll(placeHoldingString, replaceString);
-        this.replacementMap.put(to, newReplacement);
+        String placeHoldingString = String.valueOf(MARKER + from + MARKER);
+        String replaceString = this.charToReplacement.get(from);
+        String newReplacement = this.charToReplacement.get(to).replaceAll(placeHoldingString, replaceString);
+        this.charToReplacement.put(to, newReplacement);
     }
 
     private Queue<Character> getStartingVertices() {
         Queue<Character> startingVertices = new LinkedList<>();
-        for (char vertice : replacementMap.keySet()) {
-            if (!this.inDegrees.containsKey(vertice)) startingVertices.offer(vertice);
+        for (char vertice : charToReplacement.keySet()) {
+            if (!this.charToIndegrees.containsKey(vertice)) startingVertices.offer(vertice);
         }
+
         return startingVertices;
     }
 
@@ -52,22 +55,22 @@ public class ApplySubstitutions {
             if (replaceString.charAt(i) == '%' &&
                     !fromCharacters.contains(replaceString.charAt(i + 1))) {
                 addToEdges(replaceString.charAt(++i), placeHolder);
-                this.inDegrees.put(placeHolder, this.inDegrees.getOrDefault(placeHolder, 0) + 1);
+                this.charToIndegrees.put(placeHolder, this.charToIndegrees.getOrDefault(placeHolder, 0) + 1);
                 fromCharacters.add(replaceString.charAt(++i));
             }
         }
     }
 
     private void addToEdges(char from, char to) {
-        List<Character> destinations = this.edges.getOrDefault(from, new ArrayList<>());
+        List<Character> destinations = this.charToEdges.getOrDefault(from, new ArrayList<>());
         destinations.add(to);
-        this.edges.put(from, destinations);
+        this.charToEdges.put(from, destinations);
     }
 
-    private void addToMap(List<List<String>> replacements) {
+    private void buildGraph(List<List<String>> replacements) {
         for (List<String> replacement : replacements) {
             char placeHolder = replacement.get(0).charAt(0);
-            replacementMap.put(placeHolder, replacement.get(1));
+            charToReplacement.put(placeHolder, replacement.get(1));
             countIndegrees(placeHolder, replacement.get(1));
         }
     }

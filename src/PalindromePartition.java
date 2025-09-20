@@ -15,6 +15,7 @@ class PalindromePartition {
         this.generatePalindromeTable();
         this.partitioningForEachLength = new ArrayList<>();
         this.generatePalindromePartitions();
+
         return this.partitioningForEachLength.get(stringLength - 1);
     }
 
@@ -58,6 +59,7 @@ class PalindromePartition {
         if (end - start == 0) return true;
         if (s.charAt(start) != s.charAt(end)) return false;
         if (end - start == 1) return true;
+
         return this.palindromeTable[start + 1][end - 1];
     }
 }

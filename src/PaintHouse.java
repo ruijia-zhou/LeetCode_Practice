@@ -10,6 +10,7 @@ public class PaintHouse {
             preCostG = newCostG;
             preCostB = newCostB;
         }
+
         return Math.min(preCostR, Math.min(preCostG, preCostB));
     }
 }
