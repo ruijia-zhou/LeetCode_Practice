@@ -26,6 +26,7 @@ class RottenOranges {
                 if (grid[i][j] != EMPTY_GRID) this.numOranges++;
             }
         }
+
         return BFS();
     }
 
@@ -45,6 +46,7 @@ class RottenOranges {
             }
         }
         numMinutes = Math.max(0, numMinutes - 1);
+
         return this.numRottenOranges == this.numOranges ? numMinutes : -1;
     }
 

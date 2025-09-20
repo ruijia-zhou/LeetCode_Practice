@@ -8,6 +8,7 @@ public class PeopleAwareOfSecret {
         for (int i = 2; i <= n; i++) {
             shareSecret(secretBuffer, delay, forget);
         }
+
         return countNumPeopleAwareOfSecretsOnFinalDay(secretBuffer);
     }
 
@@ -31,6 +32,7 @@ public class PeopleAwareOfSecret {
             numPeopleKnowingSecret  += numPerDay;
             numPeopleKnowingSecret  %= FIXED_MODULAR;
         }
+
         return numPeopleKnowingSecret ;
     }
 }
